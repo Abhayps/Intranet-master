@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<br><br><br><br><br>
+<center>
+<div class="container">
+    <h1>Summary</h1>
+    <form method="post">
+        {% csrf_token %}
+
+
+        {{ feedback_form.as_p }}
+
+        <button type="submit" >Logout</button>
+    </form>
+</div>
+</center>
+
+{% endblock %}
