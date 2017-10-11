@@ -38,10 +38,14 @@
                   <li><a href="{% url 'feed:index'%}"><b>Home</b></a></li>
                   <li><a href="{% url 'accounts:view_profile' %}"><b>Profile</b></a></li>
               </ul>
+              <ul class="nav navbar-nav ">
+                  <li><a href="{% url 'accounts:feedbacktillnow' %}"><b>Get Summary</b></a></li>
+            </ul>
                <ul class="nav navbar-nav navbar-right">
                     <li><iframe src="http://free.timeanddate.com/clock/i5vql3zj/n1038/fn7/fs20/fc09f/tct/pct/ftb/pt14/th2" frameborder="0" width="118" height="37" allowTransparency="true"></iframe>
 </li>
             </ul>
+
               <ul class="nav navbar-nav navbar-right">
                   <li><a href="{% url 'accounts:feedback' %}"><b>Clock-Out</b></a></li>
             </ul>
