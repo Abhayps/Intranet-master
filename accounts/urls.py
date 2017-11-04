@@ -14,6 +14,10 @@ urlpatterns = [
 
                 url(r'^feedback/$', views.feedback ,name='feedback' ),
 
+                url(r'^feedbacktillnow/$', views.feedbacktillnow, name='feedbacktillnow'),
+
+                #url(r'^getsummary/$', views.getsummary, name='getsummary'),
+
                 url(r'^register/$', views.register , name='register'),
 
                 url(r'^register2/$',views.register2,name='register2'),

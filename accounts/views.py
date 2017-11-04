@@ -1,10 +1,10 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse
 from django.shortcuts import render,redirect
 from accounts.forms import (
     RegistrationForm,
     EditProfileForm,
     UserProfileForm)
-from accounts.models import UserProfile,Feedback
+from accounts.models import UserProfile,Feedback,Contact
 from accounts.forms import UserProfileForm,FeedbackForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -14,9 +14,9 @@ import os
 import datetime
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
-from accounts.forms import (RegistrationForm,EditProfileForm)
+from accounts.forms import (RegistrationForm,EditProfileForm,ContactFilterForm)
 from accounts.models import UserProfile
-from accounts.forms import UserProfileForm
+from accounts.forms import UserProfileForm,ContactForm
 from django.conf import settings
 from django.contrib.auth import (REDIRECT_FIELD_NAME, login as auth_login)
 from django.contrib.auth.decorators import login_required
@@ -51,6 +51,7 @@ def feedback(request):
         if feedback_form.is_valid():
             new_feedback = Feedback()
             new_feedback.feedback = feedback_form.cleaned_data['feedback']
+            print(new_feedback.feedback)
             #new_feedback.feedback_time = timezone.now()
             #new_feedback.save()
             t = request.user
@@ -72,6 +73,64 @@ def feedback(request):
 
     context = {'feedback_form': feedback_form,}
     return render(request, 'accounts/feedback_form.html', context)
+
+"""@login_required
+def feedbacktillnow(request):
+    if request.method == 'POST':
+        contact_form = ContactForm(request.POST)
+        if contact_form.is_valid():
+            new_contact = Contact()
+            new_contact.selectuser = contact_form.cleaned_data['selectuser']
+            t = request.user
+            directory = "datafolder/" + str(t)
+            # print (ret_variable_count())
+            filepath = os.path.join(directory)
+            f = open(filepath, "r+")
+            content = f.readlines()
+
+            return HttpResponse(content, content_type='text/plain')
+
+            #return HttpResponseRedirect('/account/')
+
+    else:
+        contact_form = ContactForm()
+        all_users = UserProfile.objects.all()
+
+    context = {'contact_form': contact_form,'all_users' : all_users}
+    return render(request, 'accounts/summary.html', context)"""
+
+@login_required
+def feedbacktillnow(request):
+    if request.method == 'POST':
+        contact_form = ContactFilterForm(request.POST)
+        if contact_form.is_valid():
+
+            t = contact_form.cleaned_data['User']
+            print(t)
+            #t = request.user
+            directory = "datafolder/" + str(t)
+            # print (ret_variable_count())
+
+            filepath = os.path.join(directory)
+            if os.path.exists(filepath):
+                f = open(filepath, "r+")
+                content = f.readlines()
+                return HttpResponse(content, content_type='text/plain')
+            else:
+                print("summary not found")
+                return HttpResponse("No Record Found")
+
+
+
+            #return HttpResponseRedirect('/account/')
+
+    else:
+        contact_form = ContactFilterForm()
+        all_users = UserProfile.objects.all()
+
+    context = {'contact_form': contact_form,}
+    return render(request, 'accounts/summary.html', context)
+
 
 def logout_view(request):
     print request.user
